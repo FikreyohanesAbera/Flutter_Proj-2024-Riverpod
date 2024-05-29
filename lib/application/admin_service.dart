@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:http/http.dart' as http;
 
-class AuthService {
-  static Future<Map<String, String>> login(
+class AdminService {
+  static Future<Map<String, String>> admin(
       ref, String email, String password, String role) async {
     try {
       print("koda");
@@ -13,32 +13,18 @@ class AuthService {
       var curr_url = (role != 'Admin') ? 'login' : "admin";
       print(email);
       print(password);
-      var response;
-      if (role != "Admin") {
-        response = await http.post(
-          Uri.parse('${urll}${curr_url}'),
-          body: {
-            'email': email,
-            'password': password,
-          },
-        );
-      } else {
-        response = await http.post(
-          Uri.parse('${urll}${curr_url}'),
-          body: {
-            'name': email,
-            'password': password,
-          },
-        );
-      }
+      final response = await http.post(
+        Uri.parse('${urll}${curr_url}'),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = json.decode(response.body);
-        if (role != "Admin") {
-          final String token = responseData['token'];
-          ref.read(tokenProvider.notifier).state = token;
-        }
-
+        final String token = responseData['token'];
+        ref.read(tokenProvider.notifier).state = token;
         final resp = {'success': "successfull"};
         return resp;
       } else {

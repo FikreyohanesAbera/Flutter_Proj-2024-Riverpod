@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/application/Providers/tableProvider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/toggle_button.dart';
 import '../widgets/date_picker.dart';
 
-class AdminPage extends StatelessWidget {
+class AdminPage extends ConsumerWidget {
   final bool isDarkMode;
   final VoidCallback toggleTheme;
 
-  const AdminPage({super.key, required this.isDarkMode, required this.toggleTheme});
+  final TextEditingController num_of_people1 = TextEditingController();
+  final TextEditingController tableNum1 = TextEditingController();
+  final TextEditingController tableNum2 = TextEditingController();
+
+  final TextEditingController floorNum1 = TextEditingController();
+
+  final TextEditingController type1 = TextEditingController();
+
+  final TextEditingController num_of_people3 = TextEditingController();
+  final TextEditingController tableNum3 = TextEditingController();
+  final TextEditingController tableNum4 = TextEditingController();
+
+  final TextEditingController floorNum3 = TextEditingController();
+
+  final TextEditingController type3 = TextEditingController();
+
+  AdminPage({super.key, required this.isDarkMode, required this.toggleTheme});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -23,7 +41,7 @@ class AdminPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding:const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -52,24 +70,51 @@ class AdminPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'Total Number'),
+                      controller: tableNum1,
+                      decoration:
+                          const InputDecoration(labelText: 'Table Number'),
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Number of Seats'),
+                      controller: num_of_people1,
+                      decoration:
+                          const InputDecoration(labelText: 'Number of Seats'),
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Floor Number'),
+                      controller: floorNum1,
+                      decoration:
+                          const InputDecoration(labelText: 'Floor Number'),
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Type'),
+                      controller: type1,
+                      decoration: const InputDecoration(labelText: 'Type'),
                     ),
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Implement add table functionality
+                        onPressed: () async {
+                          final String seats = num_of_people1.text;
+                          final String floor = floorNum1.text;
+
+                          final String typem = type1.text;
+
+                          final String tableNumber = tableNum1.text;
+
+                          final dynamic goal = ref.watch(tableStateProvider);
+                          await ref.read(tableStateProvider.notifier).table(
+                              ref, seats, typem, floor, tableNumber, "create");
+                          if (goal.containsKey("error")) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('${goal['error']}'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Successfully Added'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          }
                         },
-                        child:const Text('Add'),
+                        child: const Text('Add'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blueGrey[900],
@@ -84,20 +129,10 @@ class AdminPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Card(
-              child: Center(
-                child: ListTile(
-                  title: const Text('Get All Tables'),
-                  onTap: () {
-                    // Implement get all tables functionality
-                  },
-                ),
-              ),
-            ),
             const SizedBox(height: 16),
             Card(
               child: Padding(
-                padding:const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -107,15 +142,53 @@ class AdminPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Table Number'),
+                      controller: tableNum2,
+                      decoration:
+                          const InputDecoration(labelText: 'Table Number'),
                     ),
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Implement get single table functionality
+                        onPressed: () async {
+                          final String tableNumber = tableNum2.text;
+
+                          final dynamic goal = ref.watch(tableStateProvider);
+                          await ref
+                              .read(tableStateProvider.notifier)
+                              .table(ref, "", "", "", tableNumber, "read");
+                          if (goal.containsKey("error")) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('${goal['error']}'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Table ${goal['tableNumber']}'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('Number of Seats: ${goal['seats']}'),
+                                      Text('Floor Number ${goal['floor']}'),
+                                      Text('Type of ${goal['Type']}'),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Close'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
-                        child:const Text('Get Table'),
+                        child: const Text('Get Table'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blueGrey[900],
@@ -132,7 +205,7 @@ class AdminPage extends StatelessWidget {
             const SizedBox(height: 16),
             Card(
               child: Padding(
-                padding:const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -142,24 +215,51 @@ class AdminPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Total Number'),
+                      controller: tableNum3,
+                      decoration:
+                          const InputDecoration(labelText: 'Table Number'),
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Number of Seats'),
+                      controller: num_of_people3,
+                      decoration:
+                          const InputDecoration(labelText: 'Number of Seats'),
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Floor Number'),
+                      controller: floorNum3,
+                      decoration:
+                          const InputDecoration(labelText: 'Floor Number'),
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(labelText: 'Type'),
+                      controller: type3,
+                      decoration: const InputDecoration(labelText: 'Type'),
                     ),
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Implement update table functionality
+                        onPressed: () async {
+                          final String seats = num_of_people3.text;
+                          final String floor = floorNum3.text;
+
+                          final String typem = type3.text;
+
+                          final String tableNumber = tableNum3.text;
+
+                          final dynamic goal = ref.watch(tableStateProvider);
+                          await ref.read(tableStateProvider.notifier).table(
+                              ref, seats, typem, floor, tableNumber, "update");
+                          if (goal.containsKey("error")) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('${goal['error']}'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Successfully Updated'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          }
                         },
-                        child:const Text('Update Table'),
+                        child: const Text('Update Table'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blueGrey[900],
@@ -176,7 +276,7 @@ class AdminPage extends StatelessWidget {
             const SizedBox(height: 16),
             Card(
               child: Padding(
-                padding:const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -186,16 +286,34 @@ class AdminPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
-                      decoration:const InputDecoration(
-                          labelText: 'Total Number of Tables to Delete'),
+                      controller: tableNum4,
+                      decoration: const InputDecoration(
+                          labelText: 'Table Number to Delete'),
                     ),
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final String tableNumber = tableNum4.text;
+
+                          final dynamic goal = ref.watch(tableStateProvider);
+                          await ref
+                              .read(tableStateProvider.notifier)
+                              .table(ref, "", "", "", tableNumber, "delete");
+                          if (goal.containsKey("error")) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('${goal['error']}'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Sucessfully Deleted'),
+                              duration: const Duration(seconds: 5),
+                            ));
+                          }
                           // Implement delete table functionality
                         },
-                        child:const Text('Delete Table'),
+                        child: const Text('Delete Table'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blueGrey[900],

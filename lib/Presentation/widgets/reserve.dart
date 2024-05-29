@@ -47,7 +47,6 @@ class ReservationForm extends ConsumerWidget {
     }, loading: () {
       print("loading");
     });
-    final String id = ref.watch(userDataProvider);
     final bool _isConfirming = ref.watch(isConfirmingProvider);
     return SingleChildScrollView(
       child: Padding(
@@ -91,8 +90,6 @@ class ReservationForm extends ConsumerWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                ref.read(userDataProvider.notifier).state = datas;
-
                 ref.read(isConfirmingProvider.notifier).state = false;
                 await ref.read(reserveStateProvider.notifier).reserve(
                       ref,

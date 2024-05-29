@@ -6,10 +6,10 @@ class UserState extends StateNotifier<String> {
   final String token;
   UserState(this.token) : super("");
 
-  Future<String> user(String token) async {
+  Future<String> user(ref, String token) async {
     print("hehe");
     try {
-      final String result = await UserService.user(token);
+      final String result = await UserService.user(ref, token);
       state = result;
       return result;
     } catch (error) {
