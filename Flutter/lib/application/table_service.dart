@@ -38,8 +38,9 @@ class TableService {
               'tableNum': tableNUM
             });
       } else if (method == "delete") {
+        print('${urll}${curr_url}}/${tableNUM}');
         response =
-            await http.delete(Uri.parse('${urll}${curr_url}}/${tableNUM}'));
+            await http.delete(Uri.parse('${urll}${curr_url}/${tableNUM}'));
       }
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
