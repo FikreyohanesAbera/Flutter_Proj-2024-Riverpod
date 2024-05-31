@@ -7,8 +7,6 @@ class TableState extends StateNotifier<Map<String, String>> {
 
   Future<void> table(ref, String seats, String type, String floor,
       String tableNUM, String method) async {
-    print("yess");
-    print(tableNUM);
     try {
       final Map<String, String> result = await TableService(Client())
           .table(ref, type, floor, tableNUM, seats, method);
