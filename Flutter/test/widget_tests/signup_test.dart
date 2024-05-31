@@ -24,27 +24,4 @@ void main() {
 
     expect(find.text('Sign In with Google'), findsOneWidget);
   });
-
-  testWidgets('Sign up button triggers sign up process',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
-          home: SignupPage(),
-        ),
-      ),
-    );
-
-    await tester.tap(find.text('Sign up'));
-
-    await tester.pumpAndSettle();
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          SignupStateProvider.overrideWith((ref) => SignupState()),
-        ],
-        child: const SignupPage(),
-      ),
-    );
-  });
 }

@@ -13,7 +13,7 @@ class TableService {
       String tableNUM, String seatsH, String method) async {
     try {
       dynamic response;
-      const urll = 'http://192.168.1.110:5000/';
+      const urll = 'http://10.5.223.79:5000/';
       var curr_url = 'tables';
       if (method == "create") {
         response = await client.post(Uri.parse('${urll}${curr_url}'), headers: {
@@ -34,8 +34,8 @@ class TableService {
             },
             body: {
               'updseats': seatsH,
-              'updtype': typeH,
-              'updfloor': floor,
+              'updtype': floor,
+              'updfloor': typeH,
               'tableNum': tableNUM
             });
       } else if (method == "delete") {

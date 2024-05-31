@@ -12,7 +12,7 @@ class CancelService {
   static Future<Map<String, String>> cancel(
       ref, String time, int tablesNum) async {
     try {
-      const urll = 'http://192.168.1.110:5000/';
+      const urll = 'http://10.5.223.79:5000/';
       var curr_url = 'reserve/delete';
       print(time);
       print(tablesNum);

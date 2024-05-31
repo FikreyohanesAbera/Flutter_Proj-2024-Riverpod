@@ -18,7 +18,7 @@ Future<List<ReservedTable>> fetchDataFromBackend(ref, String id) async {
   print(ref.read(tokenProvider.notifier).state);
 
   final response = await http.get(
-      Uri.parse("http://192.168.1.110:5000/reserve/userreservations"),
+      Uri.parse("http://10.5.223.79:5000/reserve/userreservations"),
       headers: {"token": ref.read(tokenProvider.notifier).state});
   print(response.statusCode);
 

@@ -10,7 +10,7 @@ class UserService {
     print("pppppppppppppppppppppppppppppppp");
     print("the token is  ${ref.read(tokenProvider.notifier).state}");
     try {
-      const urll = 'http://192.168.1.110:5000/auth/';
+      const urll = 'http://10.5.223.79:5000/auth/';
       var curr_url = 'user';
       final response = await http.get(Uri.parse('${urll}${curr_url}'),
           headers: {'token': ref.read(tokenProvider.notifier).state});

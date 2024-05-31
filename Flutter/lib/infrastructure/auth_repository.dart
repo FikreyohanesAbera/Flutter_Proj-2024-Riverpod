@@ -11,7 +11,7 @@ class AuthService {
       ref, String email, String password, String role) async {
     try {
       print("koda");
-      const urll = 'http://192.168.1.110:5000/auth/';
+      const urll = 'http://10.5.223.79:5000/auth/';
       var curr_url = (role != 'Admin') ? 'login' : "admin";
       print(email);
       print(password);
@@ -56,7 +56,7 @@ class AuthService {
   Future<Map<String, String>> register(
       String email, String password, String username) async {
     try {
-      const urll = 'http://192.168.1.110:5000/auth/';
+      const urll = 'http://10.5.223.79:5000/auth/';
       var curr_url = 'signup';
       final response = await client.post(
         Uri.parse('${urll}${curr_url}'),

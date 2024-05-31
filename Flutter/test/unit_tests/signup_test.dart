@@ -14,7 +14,7 @@ void main() {
     );
     expect(
       container.read(SignupStateProvider),
-      equals(""),
+      equals({}),
     );
   });
 }

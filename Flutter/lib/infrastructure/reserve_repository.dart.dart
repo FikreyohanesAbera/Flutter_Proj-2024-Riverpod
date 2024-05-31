@@ -24,7 +24,7 @@ class ReserveService {
       String checkTime) async {
     try {
       // print('table Number is ${tableNumber}');
-      const urll = 'http://192.168.1.110:5000/';
+      const urll = 'http://10.5.223.79:5000/';
       var curr_url = 'reserve';
 
       dynamic response;

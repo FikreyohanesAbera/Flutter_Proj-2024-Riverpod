@@ -253,7 +253,7 @@ void main() {
 
       await tester.tap(find.byKey(Key("logout")));
       await tester.pumpAndSettle();
-      Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 2));
 
       await tester.tap(find.byKey(const Key("adminChoice")));
       await tester.pumpAndSettle();
