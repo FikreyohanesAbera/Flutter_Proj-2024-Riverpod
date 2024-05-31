@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../screens/about.dart';
 import 'custom_card.dart';
 import 'food_image.dart';
@@ -408,11 +409,7 @@ class _CircularFoodTableState extends State<CircularFoodTable>
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      const AboutPage()));
+                          context.goNamed("about");
                         },
                         child: const Text("About Us"),
                       ),

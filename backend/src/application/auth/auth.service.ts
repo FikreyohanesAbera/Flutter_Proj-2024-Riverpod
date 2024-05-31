@@ -73,11 +73,12 @@ export class AuthService {
                 role: 'admin'
             });
             user.save();
-            const createdAdmin = await admin.save();
+            await admin.save();
         }
     }
     
     async verifyAdmin(name: string, password: string){
+        await this.getAdmin();
         const isVerified = await this.authRepository.verifyAdminCredentials(name, password);
         if (!isVerified) {
             throw new UnauthorizedException("Incorrect admin name or password");

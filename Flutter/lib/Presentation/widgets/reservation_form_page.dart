@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/application/Providers/branchProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../application/Providers/typeProvider.dart';
 import './reserve.dart';
 
@@ -43,6 +44,13 @@ class _ReservationFormPageState extends ConsumerState<ReservationFormPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reservation Form'),
+        leading: IconButton(
+          key: const Key("backToHomeFromReserve"),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).replace("/home?index=1");
+          },
+        ),
       ),
       backgroundColor: const Color.fromRGBO(8, 68, 104, 1),
       body: ReservationForm(

@@ -16,6 +16,7 @@ class TypeField extends ConsumerWidget {
     return Wrap(
       children: <Widget>[
         ChoiceChip(
+          key: const Key("typeChip"),
           label: const Padding(
             padding: EdgeInsets.symmetric(vertical: 2, horizontal: 1),
             child: FittedBox(

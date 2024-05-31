@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../auth_service.dart';
+import 'package:http/http.dart';
+import '../../infrastructure/auth_repository.dart';
 
 class LoginState extends StateNotifier<Map<String, String>> {
   LoginState() : super({});
@@ -8,7 +9,7 @@ class LoginState extends StateNotifier<Map<String, String>> {
     print("yess");
     try {
       final Map<String, String> result =
-          await AuthService.login(ref, email, password, role);
+          await AuthService(Client()).login(ref, email, password, role);
       // If login successful, navigate to home screen
       state = result;
     } catch (error) {

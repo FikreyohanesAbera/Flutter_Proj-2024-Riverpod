@@ -19,6 +19,7 @@ class DateField extends StatelessWidget {
         _selectDate(context);
         print(isDateFocused);
       },
+      key: Key("dateInput"),
       controller: dateController,
       readOnly: true,
       style: TextStyle(

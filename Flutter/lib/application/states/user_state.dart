@@ -1,5 +1,5 @@
-import 'package:flutter_application_1/application/reserve_service.dart';
-import 'package:flutter_application_1/application/user_service.dart';
+import 'package:flutter_application_1/infrastructure/reserve_repository.dart.dart';
+import 'package:flutter_application_1/infrastructure/user_repository.dart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserState extends StateNotifier<String> {

@@ -15,6 +15,7 @@ class NumberOfPeopleField extends StatelessWidget {
       onTap: () {
         print('Number of people field tapped');
       },
+      key: const Key("numberofpeople"),
       controller: numberOfPeopleController,
       keyboardType: TextInputType.number,
       style: const TextStyle(

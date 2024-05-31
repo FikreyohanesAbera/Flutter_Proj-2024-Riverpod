@@ -35,6 +35,7 @@ export class TablesController {
       tabType,
       tabFloor
     );
+    console.log(resp);
     return resp;
   }
 

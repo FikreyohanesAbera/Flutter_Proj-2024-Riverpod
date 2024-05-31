@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReserveRepository } from '../../infrastructure/reservation/reservation.repository';
 import { TableRepository } from '../../infrastructure/table/table.repository';
 import { Table } from '../../domain/table.model';
+import { stat } from 'fs';
 const moment = require("moment");
 
 @Injectable()
@@ -116,8 +117,7 @@ export class ReserveService {
       }
     }
   
-    // If the loop completes without finding a matching reservation, return an error
-    return { error: "Reservation not found" };
+    return {status: "error", message: "Reservation not found" };
   }
   
   async deleteReservation(tableNum: number, time: string) {

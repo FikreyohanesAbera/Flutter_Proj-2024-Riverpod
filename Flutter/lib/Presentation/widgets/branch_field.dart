@@ -16,8 +16,9 @@ class BranchField extends ConsumerWidget {
     return Wrap(
       children: <Widget>[
         ChoiceChip(
-          label: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+          key: const Key("branchChip"),
+          label: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(

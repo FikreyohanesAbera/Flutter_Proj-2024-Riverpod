@@ -3,7 +3,7 @@ import '../widgets/reservation_form_page.dart';
 
 class MainReserve extends StatelessWidget {
   final String data;
-  final bool create;
+  final String create;
   final String tableNumber;
   final String checkTime;
 
@@ -25,7 +25,7 @@ class MainReserve extends StatelessWidget {
       ),
       home: ReservationFormPage(
           data: data,
-          create: create,
+          create: create == "true",
           tableNumber: tableNumber,
           checkTime: checkTime),
     );

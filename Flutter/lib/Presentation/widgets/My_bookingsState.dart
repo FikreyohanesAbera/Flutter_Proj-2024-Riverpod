@@ -8,6 +8,7 @@ import 'package:flutter_application_1/application/Providers/stateRes.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
 import 'package:flutter_application_1/application/Providers/userProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../domain/bookingsClass.dart';
 import '../screens/ExpandedBooking.dart';
 import '../screens/bookings.dart';
@@ -200,9 +201,11 @@ class MyBookings extends StatelessWidget {
                                               ),
                                             ),
                                             onPressed: () {
-                                              Navigator.pushNamed(
-                                                  context, '/detail',
-                                                  arguments: data[index]);
+                                              context.goNamed("detail",
+                                                  extra: data[index]);
+                                              // Navigator.pushNamed(
+                                              //     context, '/detail',
+                                              //     arguments: data[index]);
                                             },
                                             child: const Padding(
                                               padding: EdgeInsets.all(8.0),

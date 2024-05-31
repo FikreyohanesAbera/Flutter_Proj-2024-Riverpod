@@ -19,10 +19,6 @@ class Bookings extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: '/',
-      routes: {
-        '/detail': (context) => const ExpandedBooking(),
-        '/reserve': (context) => const Bookings()
-      },
       home: const MyBookings(),
     );
   }

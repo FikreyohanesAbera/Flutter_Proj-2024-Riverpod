@@ -96,6 +96,7 @@ class ReservationForm extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              key: const Key("confirmBooking"),
               onPressed: () async {
                 ref.read(isConfirmingProvider.notifier).state = false;
                 await ref.read(reserveStateProvider.notifier).reserve(
@@ -112,6 +113,7 @@ class ReservationForm extends ConsumerWidget {
 
                 ref.read(isConfirmingProvider.notifier).state = false;
                 final reservestate = ref.watch(reserveStateProvider);
+                print(reservestate);
 
                 if (reservestate.containsKey("error")) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

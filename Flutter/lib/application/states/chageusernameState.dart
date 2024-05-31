@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/application/changeUsernameService.dart';
+import 'package:flutter_application_1/infrastructure/change_repository.dart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChangeUsernameState extends StateNotifier<String> {

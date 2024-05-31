@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/application/Providers/tableProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/toggle_button.dart';
 import '../widgets/date_picker.dart';
 
@@ -39,6 +40,13 @@ class AdminPage extends ConsumerWidget {
         actions: [
           ToggleButton(isDarkMode: isDarkMode, toggleTheme: toggleTheme),
         ],
+        leading: IconButton(
+          key: const Key("loginfromadmin"),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            GoRouter.of(context).replaceNamed("login");
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -70,27 +78,32 @@ class AdminPage extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
+                      key: const Key("add1"),
                       controller: tableNum1,
                       decoration:
                           const InputDecoration(labelText: 'Table Number'),
                     ),
                     TextFormField(
+                      key: const Key("add2"),
                       controller: num_of_people1,
                       decoration:
                           const InputDecoration(labelText: 'Number of Seats'),
                     ),
                     TextFormField(
+                      key: const Key("add3"),
                       controller: floorNum1,
                       decoration:
                           const InputDecoration(labelText: 'Floor Number'),
                     ),
                     TextFormField(
+                      key: const Key("add4"),
                       controller: type1,
                       decoration: const InputDecoration(labelText: 'Type'),
                     ),
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
+                        key: const Key("addbtn"),
                         onPressed: () async {
                           final String seats = num_of_people1.text;
                           final String floor = floorNum1.text;
@@ -99,9 +112,10 @@ class AdminPage extends ConsumerWidget {
 
                           final String tableNumber = tableNum1.text;
 
-                          final dynamic goal = ref.watch(tableStateProvider);
                           await ref.read(tableStateProvider.notifier).table(
                               ref, seats, typem, floor, tableNumber, "create");
+                          final dynamic goal = ref.watch(tableStateProvider);
+
                           if (goal.containsKey("error")) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('${goal['error']}'),
@@ -142,6 +156,7 @@ class AdminPage extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
+                      key: const Key("get"),
                       controller: tableNum2,
                       decoration:
                           const InputDecoration(labelText: 'Table Number'),
@@ -149,13 +164,15 @@ class AdminPage extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
+                        key: const Key("getbtn"),
                         onPressed: () async {
                           final String tableNumber = tableNum2.text;
 
-                          final dynamic goal = ref.watch(tableStateProvider);
                           await ref
                               .read(tableStateProvider.notifier)
                               .table(ref, "", "", "", tableNumber, "read");
+                          final dynamic goal = ref.watch(tableStateProvider);
+
                           if (goal.containsKey("error")) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('${goal['error']}'),
@@ -215,27 +232,32 @@ class AdminPage extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
+                      key: const Key("update1"),
                       controller: tableNum3,
                       decoration:
                           const InputDecoration(labelText: 'Table Number'),
                     ),
                     TextFormField(
+                      key: const Key("update2"),
                       controller: num_of_people3,
                       decoration:
                           const InputDecoration(labelText: 'Number of Seats'),
                     ),
                     TextFormField(
+                      key: const Key("update3"),
                       controller: floorNum3,
                       decoration:
                           const InputDecoration(labelText: 'Floor Number'),
                     ),
                     TextFormField(
+                      key: const Key("update4"),
                       controller: type3,
                       decoration: const InputDecoration(labelText: 'Type'),
                     ),
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
+                        key: const Key("updatebtn"),
                         onPressed: () async {
                           final String seats = num_of_people3.text;
                           final String floor = floorNum3.text;
@@ -244,9 +266,11 @@ class AdminPage extends ConsumerWidget {
 
                           final String tableNumber = tableNum3.text;
 
-                          final dynamic goal = ref.watch(tableStateProvider);
                           await ref.read(tableStateProvider.notifier).table(
                               ref, seats, typem, floor, tableNumber, "update");
+
+                          final dynamic goal = ref.watch(tableStateProvider);
+
                           if (goal.containsKey("error")) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('${goal['error']}'),
@@ -286,6 +310,7 @@ class AdminPage extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     TextFormField(
+                      key: const Key("delete"),
                       controller: tableNum4,
                       decoration: const InputDecoration(
                           labelText: 'Table Number to Delete'),
@@ -293,13 +318,16 @@ class AdminPage extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Center(
                       child: ElevatedButton(
+                        key: const Key("deletebtn"),
                         onPressed: () async {
                           final String tableNumber = tableNum4.text;
 
-                          final dynamic goal = ref.watch(tableStateProvider);
                           await ref
                               .read(tableStateProvider.notifier)
                               .table(ref, "", "", "", tableNumber, "delete");
+
+                          final dynamic goal = ref.watch(tableStateProvider);
+
                           if (goal.containsKey("error")) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('${goal['error']}'),

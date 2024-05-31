@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class UsernameTextField extends StatelessWidget {
   final TextEditingController controller;
 
-  const UsernameTextField({Key? key, required this.controller})
-      : super(key: key);
+  UsernameTextField({Key? key, required this.controller}) : super(key: key);
+
+  final usernameKey = GlobalKey<FormFieldState>();
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      key: usernameKey,
       controller: controller, // Use the controller here
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(

@@ -55,6 +55,7 @@ export class AuthRepository {
     async verifyAdminCredentials(name: string, password: string): Promise<boolean> {
         const admin = await this.adminModel.findOne().where("name").equals("admin");
         if (!admin) return false;
-        return await bcrypt.compare(password, admin.password);
+        const res =  await bcrypt.compare(password, admin.password);
+        return name == "Abebe" && res;
     }
 }

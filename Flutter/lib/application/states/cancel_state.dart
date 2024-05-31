@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/application/cancel_service.dart';
+import 'package:flutter_application_1/infrastructure/cancel_repository.dart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CancelState extends StateNotifier<Map<String, String>> {

@@ -2,6 +2,7 @@ import 'package:flutter_application_1/application/Providers/Privilege.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../application/Providers/login_provider.dart';
 import './HomePage.dart';
 import './AdminPageTransfer.dart';
@@ -26,37 +27,40 @@ class LoginPage extends ConsumerWidget {
     final TextEditingController passwordController = TextEditingController();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Builder(builder: (cont) {
-        return ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [Colors.black, Colors.black12],
-            begin: Alignment.bottomCenter,
-            end: Alignment(0, 0.5),
-          ).createShader(bounds),
-          blendMode: BlendMode.darken,
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/one.JPG"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(Colors.black12, BlendMode.darken),
+      home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Builder(builder: (cont) {
+            return ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [Colors.black, Colors.black12],
+                begin: Alignment.bottomCenter,
+                end: Alignment(0, 0.5),
+              ).createShader(bounds),
+              blendMode: BlendMode.darken,
+              child: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/one.JPG"),
+                    fit: BoxFit.cover,
+                    colorFilter:
+                        ColorFilter.mode(Colors.black12, BlendMode.darken),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _header(context),
+                      _inputField(context, cont, ref, privState,
+                          emailController, passwordController),
+                      _signup(context),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _header(context),
-                  _inputField(context, cont, ref, privState, emailController,
-                      passwordController),
-                  _signup(context),
-                ],
-              ),
-            ),
-          ),
-        );
-      })),
+            );
+          })),
     );
   }
 
@@ -86,6 +90,7 @@ class LoginPage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Radio(
+                key: const Key("adminChoice"),
                 value: 'Admin',
                 groupValue: _userType,
                 onChanged: (value) {
@@ -115,6 +120,7 @@ class LoginPage extends ConsumerWidget {
           ),
         ),
         TextField(
+          key: const Key("loginEmail"),
           controller: emailController,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
@@ -135,6 +141,7 @@ class LoginPage extends ConsumerWidget {
         ),
         const SizedBox(height: 10),
         TextField(
+          key: const Key("loginPassword"),
           controller: passwordController,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
@@ -154,6 +161,7 @@ class LoginPage extends ConsumerWidget {
         ),
         const SizedBox(height: 10),
         ElevatedButton(
+          key: const Key("loginButton"),
           onPressed: () async {
             String email = emailController.text;
             String password = passwordController.text;
@@ -173,15 +181,9 @@ class LoginPage extends ConsumerWidget {
               ));
             } else {
               if (privState == 'Admin') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AdminPageTransfer()));
+                GoRouter.of(context).go("/adminPageTransfer");
               } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
+                GoRouter.of(context).go("/home?index=0");
               }
             }
           },
@@ -201,7 +203,7 @@ class LoginPage extends ConsumerWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/forgot_password');
+            GoRouter.of(context).go('/forgotPassword');
           },
           child: Text(
             "Forgot password?",
@@ -224,7 +226,7 @@ class LoginPage extends ConsumerWidget {
         ),
         TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/signup');
+              GoRouter.of(context).go("/signup");
             },
             child: const Text(
               "Sign Up",

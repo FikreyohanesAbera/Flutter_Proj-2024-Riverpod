@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../widgets/themes.dart';
@@ -93,20 +94,18 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: 40),
               InfoCard(label: 'First Name', value: listt[0]),
-              const SizedBox(height: 40),
+              const SizedBox(height: 5),
               InfoCard(label: 'Email', value: listt[1]),
-              const SizedBox(height: 60),
+              const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditProfilePage()),
-                  );
+                  GoRouter.of(context).goNamed('editProfile');
                 },
                 child: const Text('Edit Profile'),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
+                key: const Key("logout"),
                 onPressed: () async {
                   try {
                     print('okay');
@@ -128,24 +127,26 @@ class ProfilePage extends ConsumerWidget {
 
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('${responseData}'),
-                        duration: const Duration(seconds: 5),
+                        duration: const Duration(seconds: 1),
                       ));
+                      GoRouter.of(context).go("/login");
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Error'),
-                        duration: const Duration(seconds: 5),
+                        duration: const Duration(seconds: 1),
                       ));
                     }
                   } catch (error, sta) {
                     print('Error occurred: $sta');
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Errors'),
-                      duration: const Duration(seconds: 5),
+                      duration: const Duration(seconds: 1),
                     ));
                   }
                 },
                 child: const Text('Log Out'),
               ),
+              const SizedBox(height: 40),
             ],
           ),
         ),
