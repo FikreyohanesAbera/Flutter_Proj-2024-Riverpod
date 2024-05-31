@@ -17,10 +17,9 @@ class CancelService {
       print(tablesNum);
       print('${urll}${curr_url}/${tablesNum}&${time}');
 
-      final response = await http
-          .delete(Uri.parse('${urll}${curr_url}${tablesNum}&${time}'), body: {
-        'id': ref.read(userDataProvider.notifier).state,
-      });
+      final response = await http.delete(
+        Uri.parse('${urll}${curr_url}${tablesNum}&${time}'),
+      );
       print(response.statusCode);
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -33,7 +32,7 @@ class CancelService {
 
           return resp;
         } else {
-          final errorMessage = json.decode(response.body)['message'] as String;
+          final errorMessage = json.decode(response.body)['error'] as String;
           return {'error': errorMessage};
         }
       } else {
@@ -41,7 +40,8 @@ class CancelService {
         final errorMessage = json.decode(response.body)['message'] as String;
         return {'error': errorMessage};
       }
-    } catch (error) {
+    } catch (error, stackTrace) {
+      print("stackTrace: $stackTrace");
       return {"error": 'An error occurred while processing your request.'};
     }
   }

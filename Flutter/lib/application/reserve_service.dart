@@ -54,25 +54,19 @@ class ReserveService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = json.decode(response.body);
-        print(responseData["status"]);
-
-        if (responseData["status"] == "success") {
+        if (!(responseData.containsKey("error"))) {
           final resp = {'success': "successfull"};
-          print(ref.read(isChangedProvider.notifier).state);
 
-          ref.read(isChangedProvider.notifier).state =
-              !(ref.read(isChangedProvider.notifier).state);
-          print(ref.read(isChangedProvider.notifier).state);
           await ref.invalidate(userResProvider);
 
           return resp;
         } else {
-          final errorMessage = json.decode(response.body)['message'] as String;
+          final errorMessage = json.decode(response.body)['error'] as String;
           return {'error': errorMessage};
         }
       } else {
         print("kkkkk");
-        final errorMessage = json.decode(response.body)['message'] as String;
+        final errorMessage = json.decode(response.body)['error'] as String;
         return {'error': errorMessage};
       }
     } catch (error, stackTrace) {
