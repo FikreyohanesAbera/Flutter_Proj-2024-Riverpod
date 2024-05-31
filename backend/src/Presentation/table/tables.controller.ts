@@ -20,7 +20,7 @@ export class TablesController {
   
 
   @Post()
-  // @UseGuards(AdminAuthGuard)
+  @UseGuards(AdminAuthGuard)
   async addTable(
     @Body('seats') tabSeats: number,
     @Body('type') tabType: string,
@@ -46,14 +46,14 @@ export class TablesController {
   }
 
   @Get(':tableNum')
-  // @UseGuards(AdminAuthGuard)
+  @UseGuards(AdminAuthGuard)
   async getTable(@Param('tableNum') tabNum: number) {
     const result = await this.tableService.getSingleTable(tabNum);
     return result;
   }
 
   @Patch(':tableNum')
-  // @UseGuards(AdminAuthGuard)
+  @UseGuards(AdminAuthGuard)
   async updateTable(
     @Param('tableNum') tabNumm: number,
     @Body('updseats') tabSeats: number,
@@ -67,7 +67,7 @@ export class TablesController {
   }
 
   @Delete(':tableNum')
-  // @UseGuards(AdminAuthGuard)
+  @UseGuards(AdminAuthGuard)
   async removeTable(@Param('tableNum') tabNum: number) {
     console.log("dalfkldasdf;laskfdldkasd");
       return await this.tableService.deleteTable(tabNum);

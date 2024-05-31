@@ -82,9 +82,22 @@ export class AuthService {
         if (!isVerified) {
             throw new UnauthorizedException("Incorrect admin name or password");
         }
+        const retrievedUser = await this.authRepository.getUserByEmail("adminAbebe@gmail.com");
+        if (!retrievedUser || !(await bcrypt.compare(password, retrievedUser.password))) {
+            console.log("tueee")
+            throw new UnauthorizedException("Invalid email or password");
+        }
+        const payload = {
+            id: retrievedUser.id,
+            email: retrievedUser.email,
+            role: retrievedUser.role 
+        };
+    
+        const jwt = await this.jwtService.signAsync(payload); 
         return {
-            statusCode: 200,
-            message: "success"
+            token: jwt,
+            status: "success"
+
         };
     }
     async changeUsername(name: string, id: string){

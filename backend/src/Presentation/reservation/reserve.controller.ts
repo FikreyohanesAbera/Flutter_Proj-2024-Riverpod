@@ -6,21 +6,26 @@ import {
     Param,
     Patch,
     Delete,
-    Req
+    Req,
+    UseGuards
   } from '@nestjs/common';
   
   import { ReserveService } from '../../application/reservation/reserve.service';
+import { JwtAuthGuard } from 'src/auth/JwtAuthGuard';
+import { AuthService } from 'src/application/auth/auth.service';
+import { request } from 'express';
   
   @Controller('/reserve')
 
   export class ReserveController{
-    constructor(private readonly reserveService: ReserveService) {}
+    constructor(private readonly reserveService: ReserveService,private readonly authService: AuthService ) {}
 
 
     
     @Post("")
+    @UseGuards(JwtAuthGuard)
     async reserveTable(
-        @Body('id') id: string,
+      @Req() request,
         @Body('seats') tableSeats: string,
         @Body('type') tableType: string,
         @Body('date') date: string,
@@ -29,12 +34,15 @@ import {
         @Body('food') food: string,
 
       ) {
+        const token = request.headers.token as string;
+        console.log(token);
+        const _id = (await this.authService.getUser(token)).id.toString();
         console.log("oy yeyeye");
         const data = new Date(date);
         const tableSeat = Number(tableSeats);
 
         const resp = await this.reserveService.reserveTable(
-          id,
+          _id,
           tableSeat,
           tableType,
           data,
@@ -45,11 +53,23 @@ import {
         console.log(resp);
         return resp;
       }
-    @Get("/today")
-    async getTodayReservations(){
-      const todayReservations = await this.reserveService.getTodayReservations();
-      return todayReservations;
+
+
+
+    @Get("/userreservations")
+    @UseGuards(JwtAuthGuard)
+    async getUserReservations(@Req() request){
+      console.log("suuuuuuu");
+
+      const token = request.headers.token as string;
+      console.log(token);
+      const _id = (await this.authService.getUser(token)).id.toString();
+      console.log(_id);
+      return this.reserveService.getUserReservations(_id);
+
     }
+
+
     @Get("/:inputtedDate")
     async getReservationsByDate(@Param('inputtedDate') inpDate:Date){
       const result = await this.reserveService.getReservationsByDate(inpDate);
@@ -57,13 +77,21 @@ import {
 
         
     }
-    @Post("/userreservations")
-    async getUserReservations(@Body("id") id:string){
-      console.log("suuuuuuu");
-      return this.reserveService.getUserReservations(id);
+
+    @Get("/today")
+    async getTodayReservations(){
+      console.log("jheeskafjdfkjafsel")
+      const todayReservations = await this.reserveService.getTodayReservations();
+      return todayReservations;
+
     }
+
+    
     @Patch("")
-    async updateReservation(@Body('id') id: string,
+    @UseGuards(JwtAuthGuard)
+
+    async updateReservation(
+      @Req() request,
 
     @Body('seats') tableSeats: number,
     @Body('type') tableType: string,
@@ -77,10 +105,13 @@ import {
 
   ){
     console.log("korkaka");
+    const token = request.headers.token as string;
+    console.log(token);
+    const _id = (await this.authService.getUser(token)).id.toString();
       const resp = await this.reserveService.updateReservation(
         tableNum,
         checktime,
-        id,
+        _id,
         tableSeats,
         tableType,
         date,
@@ -92,7 +123,9 @@ import {
       return resp;
 
     }
+    
     @Delete("/delete:tablesNumber&:time")
+    @UseGuards(JwtAuthGuard)
     async deleteReservation(@Param('tablesNumber') tableNum: number, @Param('time') time: string){
       console.log("deletetee")
       console.log(tableNum,time);

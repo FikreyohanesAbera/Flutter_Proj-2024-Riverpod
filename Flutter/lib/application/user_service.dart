@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
-import 'package:flutter_application_1/application/Providers/userProvider.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
@@ -12,8 +11,8 @@ class UserService {
     try {
       const urll = 'http://192.168.1.110:5000/auth/';
       var curr_url = 'user';
-      final response = await http.get(Uri.parse('${urll}${curr_url}'),
-          headers: {'Authorization': token});
+      final response = await http
+          .get(Uri.parse('${urll}${curr_url}'), headers: {'token': token});
 
       print(response.statusCode);
 

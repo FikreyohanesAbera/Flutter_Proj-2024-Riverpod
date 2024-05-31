@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:flutter_application_1/application/Providers/isChanged.dart';
 import 'package:flutter_application_1/application/Providers/myres.dart';
+import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
 import 'package:flutter_application_1/application/Providers/userProvider.dart';
 import 'package:http/http.dart' as http;
@@ -28,8 +29,10 @@ class ReserveService {
       dynamic response;
 
       if (create) {
-        response = await http.post(Uri.parse('${urll}${curr_url}'), body: {
-          'id': ref.read(userDataProvider.notifier).state[2],
+        print(ref.read(tokenProvider.notifier).state);
+        response = await http.post(Uri.parse('${urll}${curr_url}'), headers: {
+          "token": ref.read(tokenProvider.notifier).state
+        }, body: {
           'seats': seatsH,
           'type': typeH,
           'date': date,
@@ -39,8 +42,9 @@ class ReserveService {
         });
       } else {
         print('checktime is $foodName');
-        response = await http.patch(Uri.parse('${urll}${curr_url}'), body: {
-          'id': ref.read(userDataProvider.notifier).state[2],
+        response = await http.patch(Uri.parse('${urll}${curr_url}'), headers: {
+          "token": ref.read(tokenProvider.notifier).state
+        }, body: {
           "tableNumber": tableNumber,
           'checktime': checkTime,
           'seats': seatsH,
@@ -54,6 +58,7 @@ class ReserveService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = json.decode(response.body);
+        print(responseData);
         if (!(responseData.containsKey("error"))) {
           final resp = {'success': "successfull"};
 

@@ -14,9 +14,11 @@ class TableService {
       dynamic response;
       const urll = 'http://192.168.1.110:5000/';
       var curr_url = 'tables';
-      print(ref.read(tokenProvider.notifier).state);
       if (method == "create") {
         final response = await http.post(Uri.parse('${urll}${curr_url}'),
+            headers: {
+              "token": ref.read(tokenProvider.notifier).state
+            },
             body: {
               'seats': seatsH,
               'type': typeH,
@@ -24,13 +26,13 @@ class TableService {
               'tableNUM': tableNUM
             });
       } else if (method == "read") {
-        print('${urll}${curr_url}/${tableNUM}');
         response = await http.get(Uri.parse('${urll}${curr_url}/${tableNUM}'),
-            headers: {
-              "Authorizatation": ref.read(tokenProvider.notifier).state
-            });
+            headers: {"token": ref.read(tokenProvider.notifier).state});
       } else if (method == "update") {
         response = await http.patch(Uri.parse('${urll}${curr_url}/${tableNUM}'),
+            headers: {
+              "token": ref.read(tokenProvider.notifier).state
+            },
             body: {
               'updseats': seatsH,
               'updtype': typeH,
@@ -39,8 +41,9 @@ class TableService {
             });
       } else if (method == "delete") {
         print('${urll}${curr_url}}/${tableNUM}');
-        response =
-            await http.delete(Uri.parse('${urll}${curr_url}/${tableNUM}'));
+        response = await http.delete(
+            Uri.parse('${urll}${curr_url}/${tableNUM}'),
+            headers: {"token": ref.read(tokenProvider.notifier).state});
       }
 
       if (response.statusCode >= 200 && response.statusCode < 300) {

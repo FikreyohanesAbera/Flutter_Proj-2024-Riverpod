@@ -47,32 +47,41 @@ import {
     }
     @Get("/user")
     @UseGuards(JwtAuthGuard)
-    async getUser(@Req() request: Request){
+    async getUser(@Req() request){
         console.log("came here");
-        const cookie = request.headers.authorization;
+        const cookie = request.headers.token;
     
         if (!cookie){
             return {
                 status: "error"
             }
         };
-        return this.authService.getUser(cookie);
+         const res = (await this.authService.getUser(cookie));
+         console.log(res);
+         return {
+            status: "success",
+            id: res.id.toString(),
+            name: res.name,
+            email: res.email
+         }
 
     }
 
     @Get("/logout")
     async logout(@Res({passthrough:true}) res: Response){
         res.clearCookie('jwt');
-        res.redirect("/");
+        return {"okay":"okay"};
 
     }
     @Post("/admin")
     async verifyAdmin(@Body("name") name: string, @Body("password") password:string){
-        console.log("rrrrrrrrrrrrrrrrrrrr");
-        return this.authService.verifyAdmin(name,password);
+        const res = await this.authService.verifyAdmin(name,password);
+        console.log(res);
+        return res
 
     }
     @Post("/changeusername")
+    @UseGuards(JwtAuthGuard)
     async changeUsername(@Body("username") name: string,@Body("id") id: string){
     
         console.log("rrrrrrrrrrrrrrsssssssrrrrrr");

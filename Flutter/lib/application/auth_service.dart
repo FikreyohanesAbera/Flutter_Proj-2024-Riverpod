@@ -34,10 +34,9 @@ class AuthService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = json.decode(response.body);
-        if (role != "Admin") {
-          final String token = responseData['token'];
-          ref.read(tokenProvider.notifier).state = token;
-        }
+
+        final String token = responseData['token'];
+        ref.read(tokenProvider.notifier).state = token;
 
         final resp = {'success': "successfull"};
         return resp;

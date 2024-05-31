@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:flutter_application_1/application/Providers/isChanged.dart';
 import 'package:flutter_application_1/application/Providers/myres.dart';
+import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
 import 'package:flutter_application_1/application/Providers/userProvider.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +19,7 @@ class CancelService {
       print('${urll}${curr_url}/${tablesNum}&${time}');
 
       final response = await http.delete(
+        headers: {"token": ref.read(tokenProvider.notifier).state},
         Uri.parse('${urll}${curr_url}${tablesNum}&${time}'),
       );
       print(response.statusCode);

@@ -15,6 +15,7 @@ class ChangeUsernameService {
       const curr_url = "changeusername";
       final response = await http.post(
         Uri.parse('${urll}${curr_url}'),
+        headers: {"token": ref.read(tokenProvider.notifier).state},
         body: {
           'username': username,
           "id": ref.read(userDataProvider.notifier).state[2]

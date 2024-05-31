@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +10,7 @@ import '../widgets/themes.dart';
 import './edit_profile_page.dart';
 import '../widgets/info_card.dart';
 import '../widgets/drawer_item.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends ConsumerWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -21,6 +25,10 @@ class ProfilePage extends ConsumerWidget {
     if (pickedFile != null) {
       ref.read(imageProvider.notifier).state = File(pickedFile.path);
     }
+  }
+
+  void clearToken(WidgetRef ref) {
+    ref.read(tokenProvider.notifier).state = '';
   }
 
   @override
@@ -99,10 +107,44 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  // Implement sign out functionality
+                onPressed: () async {
+                  try {
+                    print('okay');
+                    print(ref.read(userDataProvider.notifier).state);
+                    const urll = 'http://192.168.1.110:5000/auth/';
+                    const curr_url = "logout";
+                    final response = await http.get(
+                      Uri.parse('${urll}${curr_url}'),
+                      headers: {
+                        "token": ref.read(tokenProvider.notifier).state
+                      },
+                    );
+
+                    if (response.statusCode >= 200 &&
+                        response.statusCode < 300) {
+                      final responseData = json.decode(response.body)["okay"];
+                      clearToken(ref);
+                      print(ref.read(tokenProvider.notifier).state);
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('${responseData}'),
+                        duration: const Duration(seconds: 5),
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Error'),
+                        duration: const Duration(seconds: 5),
+                      ));
+                    }
+                  } catch (error, sta) {
+                    print('Error occurred: $sta');
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Errors'),
+                      duration: const Duration(seconds: 5),
+                    ));
+                  }
                 },
-                child: const Text('Sign Out'),
+                child: const Text('Log Out'),
               ),
             ],
           ),

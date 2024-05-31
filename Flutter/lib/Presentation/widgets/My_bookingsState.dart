@@ -230,14 +230,27 @@ class MyBookings extends StatelessWidget {
                                                       89), // Change color here
                                                 ),
                                               ),
-                                              onPressed: () {
-                                                ref
+                                              onPressed: () async {
+                                                await ref
                                                     .read(CancelStateProvider
                                                         .notifier)
                                                     .cancel(
                                                         ref,
                                                         data[index].time!,
                                                         data[index].tablesNum);
+                                                final dynamic cancelState = ref
+                                                    .watch(CancelStateProvider);
+                                                if (cancelState
+                                                    .containsKey("error")) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    content: Center(
+                                                        child: Text(
+                                                            'Unauthorized')),
+                                                    duration: const Duration(
+                                                        seconds: 5),
+                                                  ));
+                                                }
                                               },
                                               child: const Padding(
                                                 padding: EdgeInsets.all(8.0),

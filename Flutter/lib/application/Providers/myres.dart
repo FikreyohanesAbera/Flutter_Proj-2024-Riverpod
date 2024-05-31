@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/application/Providers/tokenProvider.dart';
 import 'package:flutter_application_1/application/Providers/userDataProvider.dart';
 import 'package:flutter_application_1/domain/bookingsClass.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,12 +15,11 @@ final userResProvider =
 
 Future<List<ReservedTable>> fetchDataFromBackend(ref, String id) async {
   print("hello");
-  print(id);
+  print(ref.read(tokenProvider.notifier).state);
 
-  final response = await http.post(
-    Uri.parse("http://192.168.1.110:5000/reserve/userreservations"),
-    body: {"id": id},
-  );
+  final response = await http.get(
+      Uri.parse("http://192.168.1.110:5000/reserve/userreservations"),
+      headers: {"token": ref.read(tokenProvider.notifier).state});
   print(response.statusCode);
 
   if (response.statusCode >= 200 && response.statusCode < 300) {

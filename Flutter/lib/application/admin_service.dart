@@ -23,6 +23,7 @@ class AdminService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = json.decode(response.body);
+        print(responseData);
         final String token = responseData['token'];
         ref.read(tokenProvider.notifier).state = token;
         final resp = {'success': "successfull"};
@@ -31,8 +32,9 @@ class AdminService {
         final errorMessage = json.decode(response.body)['message'] as String;
         return {'error': errorMessage};
       }
-    } catch (error) {
+    } catch (error, st) {
       print('Error occurred: $error');
+      print("stacktrace $st");
       return {"error": 'An error occurred while processing your request.'};
     }
   }
