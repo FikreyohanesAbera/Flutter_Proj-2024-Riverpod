@@ -16,6 +16,10 @@ final isConfirmingProvider = StateProvider<bool>((ref) {
 });
 
 class ReservationForm extends ConsumerWidget {
+  bool create;
+  String tableNumber;
+  String checkTime;
+
   String foodName;
   TextEditingController numberOfPeopleController;
   TextEditingController dateController;
@@ -26,6 +30,9 @@ class ReservationForm extends ConsumerWidget {
   final void Function(bool, String) onBranchSelected;
 
   ReservationForm({
+    required this.checkTime,
+    required this.tableNumber,
+    required this.create,
     required this.foodName,
     required this.numberOfPeopleController,
     required this.dateController,
@@ -92,14 +99,16 @@ class ReservationForm extends ConsumerWidget {
               onPressed: () async {
                 ref.read(isConfirmingProvider.notifier).state = false;
                 await ref.read(reserveStateProvider.notifier).reserve(
-                      ref,
-                      numberOfPeopleController.text,
-                      dateController.text,
-                      timeController.text,
-                      ref.read(typeProvider.notifier).state,
-                      ref.read(branchProvider.notifier).state,
-                      foodName,
-                    );
+                    ref,
+                    numberOfPeopleController.text,
+                    dateController.text,
+                    timeController.text,
+                    ref.read(typeProvider.notifier).state,
+                    ref.read(branchProvider.notifier).state,
+                    foodName,
+                    create,
+                    tableNumber,
+                    checkTime);
 
                 ref.read(isConfirmingProvider.notifier).state = false;
                 final reservestate = ref.watch(reserveStateProvider);

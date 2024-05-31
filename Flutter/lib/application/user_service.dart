@@ -21,7 +21,11 @@ class UserService {
         final responseData = json.decode(response.body);
         print(responseData);
         if (responseData['status'] == "success") {
-          List<String> listt = [responseData['name'], responseData['email']];
+          List<String> listt = [
+            responseData['name'],
+            responseData['email'],
+            responseData['id']
+          ];
           ref.read(userDataProvider.notifier).state = listt;
           print(ref.read(userDataProvider.notifier).state);
 

@@ -82,8 +82,12 @@ class SearchBody extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              MainReserve(data: foodItems[index].name!)),
+                          builder: (context) => MainReserve(
+                                data: foodItems[index].name!,
+                                create: true,
+                                tableNumber: '0',
+                                checkTime: '',
+                              )),
                     );
                   },
                   child: Container(

@@ -3,7 +3,17 @@ import '../widgets/reservation_form_page.dart';
 
 class MainReserve extends StatelessWidget {
   final String data;
-  MainReserve({Key? key, required this.data}) : super(key: key);
+  final bool create;
+  final String tableNumber;
+  final String checkTime;
+
+  MainReserve(
+      {Key? key,
+      required this.checkTime,
+      required this.data,
+      required this.create,
+      required this.tableNumber})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +23,11 @@ class MainReserve extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ReservationFormPage(data: data),
+      home: ReservationFormPage(
+          data: data,
+          create: create,
+          tableNumber: tableNumber,
+          checkTime: checkTime),
     );
   }
 }

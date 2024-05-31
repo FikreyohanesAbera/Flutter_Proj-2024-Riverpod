@@ -6,8 +6,17 @@ import './reserve.dart';
 
 class ReservationFormPage extends ConsumerStatefulWidget {
   final String data;
+  final bool create;
+  final String tableNumber;
+  final String checkTime;
 
-  ReservationFormPage({Key? key, required this.data}) : super(key: key);
+  ReservationFormPage(
+      {Key? key,
+      required this.checkTime,
+      required this.data,
+      required this.create,
+      required this.tableNumber})
+      : super(key: key);
 
   @override
   _ReservationFormPageState createState() => _ReservationFormPageState();
@@ -37,6 +46,9 @@ class _ReservationFormPageState extends ConsumerState<ReservationFormPage> {
       ),
       backgroundColor: const Color.fromRGBO(8, 68, 104, 1),
       body: ReservationForm(
+        checkTime: widget.checkTime,
+        tableNumber: widget.tableNumber,
+        create: widget.create,
         foodName: widget.data,
         numberOfPeopleController: _numberOfPeopleController,
         dateController: _dateController,

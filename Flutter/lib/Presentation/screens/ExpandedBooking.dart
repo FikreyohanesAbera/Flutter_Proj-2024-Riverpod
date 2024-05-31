@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Presentation/screens/main_reserve.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../others/bookingDetail.dart';
 import '../../domain/bookingsClass.dart';
 import '../widgets/My_bookingsState.dart';
 import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const ExpandedBooking());
 }
+
+final remainingTimeProvider = Provider<String>((ref) {
+  final targetDateTime = ref.watch(targetDateTimeProvider);
+  final remainingDuration = targetDateTime.difference(DateTime.now());
+
+  // Format remaining time
+  final hours = remainingDuration.inHours;
+  final minutes = remainingDuration.inMinutes.remainder(60);
+  final seconds = remainingDuration.inSeconds.remainder(60);
+
+  return '$hours hours, $minutes minutes, $seconds seconds';
+});
+
+final targetDateTimeProvider = Provider<DateTime>((ref) {
+  final format = DateFormat('E MMM dd yyyy hh:mma');
+  return format.parse('Mon May 27 2024 09:09AM');
+});
 
 class ExpandedBooking extends StatefulWidget {
   const ExpandedBooking({Key? key}) : super(key: key);
@@ -48,7 +68,7 @@ class _ExpandedBookingState extends State<ExpandedBooking> {
   Widget build(BuildContext context) {
     final dynamic arguments = ModalRoute.of(context)?.settings.arguments;
 
-    ReservedTable? yourData;
+    ReservedTable yourData;
 
     if (arguments != null && arguments is ReservedTable) {
       yourData = arguments;
@@ -265,7 +285,7 @@ class _ExpandedBookingState extends State<ExpandedBooking> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Text(
-                                  'Mar 24 2025,5:00AM',
+                                  '${yourData.date} ${yourData.time}',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     color: Color.fromRGBO(33, 34, 33, 1),
@@ -288,7 +308,17 @@ class _ExpandedBookingState extends State<ExpandedBooking> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context, '/reserve');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MainReserve(
+                                            data: yourData.food!,
+                                            create: false,
+                                            tableNumber:
+                                                yourData.tablesNum.toString(),
+                                            checkTime: yourData.time!,
+                                          )),
+                                );
                               },
                               child: const Text(
                                 'Modify Booking',
